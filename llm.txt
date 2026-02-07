@@ -1,0 +1,46 @@
+Tool: google-drive
+Package: @kazibee/google-drive
+
+Use this tool for Google Drive file operations. Prefer explicit file IDs and narrow list queries.
+
+Auth requirements
+- CLIENT_ID
+- CLIENT_SECRET
+- REFRESH_TOKEN
+- If auth fails, instruct user to run: kazibee google-drive login
+
+Typical intents to map
+- "list files" -> listFiles(query, pageSize)
+- "get file details" -> getFile(fileId)
+- "create folder" -> createFolder(name, parentId?)
+- "upload text file" -> uploadTextFile(name, content, options?)
+- "update file" -> updateTextFile(fileId, content, mimeType?)
+- "download file text" -> downloadTextFile(fileId)
+- "remove file" -> deleteFile(fileId)
+
+Code call examples
+```ts
+const files = await tools["google-drive"].listFiles("trashed=false", 20);
+const file = await tools["google-drive"].getFile("1abcDEFghiJKL");
+const folder = await tools["google-drive"].createFolder("Weekly Reports");
+
+const uploaded = await tools["google-drive"].uploadTextFile(
+  "report.txt",
+  "Week 1 summary",
+  { parentId: folder.id, mimeType: "text/plain" }
+);
+
+const updated = await tools["google-drive"].updateTextFile(
+  uploaded.id,
+  "Week 1 summary (revised)",
+  "text/plain"
+);
+
+const text = await tools["google-drive"].downloadTextFile(uploaded.id);
+await tools["google-drive"].deleteFile(uploaded.id);
+```
+
+Output behavior
+- Return concise structured results.
+- Include file IDs in responses for follow-up actions.
+- Confirm mutation results (created/updated/deleted).
