@@ -1,6 +1,6 @@
 # @kazibee/google-drive
 
-Google Drive tool for kazibee. List files, read metadata, create folders, and upload/update text files.
+Google Drive tool for kazibee. List files, read metadata, create folders, create native Google Docs, move files between folders, and upload/update text files.
 
 ## Install
 
@@ -27,8 +27,10 @@ Opens your browser to authorize with Google. Credentials are stored automaticall
 - `listFiles(query?, pageSize?)`
 - `getFile(fileId)`
 - `createFolder(name, parentId?)`
+- `createGoogleDoc(name, parentId?)`
 - `uploadTextFile(name, content, options?)`
 - `updateTextFile(fileId, content, mimeType?)`
+- `moveFile(fileId, targetParentId, options?)`
 - `downloadTextFile(fileId)`
 - `deleteFile(fileId)`
 
@@ -39,11 +41,15 @@ const files = await tools["google-drive"].listFiles("trashed=false", 20);
 
 const folder = await tools["google-drive"].createFolder("Ops Docs");
 
+const doc = await tools["google-drive"].createGoogleDoc("Content Plan", folder.id);
+
 const uploaded = await tools["google-drive"].uploadTextFile(
   "notes.txt",
   "Project notes",
   { parentId: folder.id, mimeType: "text/plain" }
 );
+
+const moved = await tools["google-drive"].moveFile(uploaded.id, folder.id);
 
 const content = await tools["google-drive"].downloadTextFile(uploaded.id);
 ```
