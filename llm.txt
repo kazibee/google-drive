@@ -21,6 +21,16 @@ Typical intents to map
 - "remove file" -> deleteFile(fileId)
 
 Code call examples
+Every sandbox module must use this entry-point shape:
+```ts
+export default async function ({ tools }) {
+  const drive = tools["google-drive"];
+  const files = await drive.listFiles("trashed=false", 20);
+  return files;
+}
+```
+
+Within that function, calls look like:
 ```ts
 const files = await tools["google-drive"].listFiles("trashed=false", 20);
 const file = await tools["google-drive"].getFile("1abcDEFghiJKL");
