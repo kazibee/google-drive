@@ -11,6 +11,9 @@
     "@types/bun": "^1.3.8"
   },
   "kazibee": {
-    "description": "Manage Google Drive files and folders with OAuth2 authentication"
+    "description": "Manage Google Drive files and folders with OAuth2 authentication",
+    "commands": {
+      "login": { "description": "Run the OAuth2 browser login flow to obtain and store Google credentials" }
+    }
   }
 }
