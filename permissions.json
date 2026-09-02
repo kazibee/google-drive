@@ -1,4 +1,22 @@
 {
-  "net": ["www.googleapis.com", "oauth2.googleapis.com"],
-  "env": ["CLIENT_ID", "CLIENT_SECRET", "REFRESH_TOKEN"]
+  "net": [
+    "www.googleapis.com",
+    "oauth2.googleapis.com"
+  ],
+  "env": {
+    "CLIENT_ID": "CLIENT_ID",
+    "CLIENT_SECRET": "CLIENT_SECRET",
+    "REFRESH_TOKEN": "REFRESH_TOKEN"
+  },
+  "methods": {
+    "listFiles": { "read": true, "write": false },
+    "getFile": { "read": true, "write": false },
+    "downloadTextFile": { "read": true, "write": false },
+    "createFolder": { "read": true, "write": true },
+    "createGoogleDoc": { "read": true, "write": true },
+    "uploadTextFile": { "read": true, "write": true },
+    "updateTextFile": { "read": true, "write": true },
+    "moveFile": { "read": true, "write": true },
+    "deleteFile": { "read": true, "write": true }
+  }
 }

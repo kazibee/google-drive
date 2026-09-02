@@ -1,8 +1,10 @@
 {
   "name": "@kazibee/google-drive",
   "version": "0.1.0",
+  "description": "Manage Google Drive files and folders with OAuth2 authentication.",
   "type": "module",
   "main": "./src/index.ts",
+  "types": "./.kazibee/index.d.ts",
   "command": "./src/command.ts",
   "dependencies": {
     "@googleapis/drive": "^8.0.1"
@@ -11,9 +13,30 @@
     "@types/bun": "^1.3.8"
   },
   "kazibee": {
-    "description": "Manage Google Drive files and folders with OAuth2 authentication",
+    "manifestVersion": 1,
+    "id": "google-drive",
+    "description": "Manage Google Drive files and folders with OAuth2 authentication.",
+    "brief": "Search, inspect, upload, download, move, and delete Google Drive files and folders.",
+    "tags": [
+      "google",
+      "drive",
+      "cloud-storage",
+      "files",
+      "folders",
+      "search",
+      "upload",
+      "download"
+    ],
+    "manual": "./llm.txt",
+    "permissions": "./permissions.json",
+    "auth": {
+      "type": "oauth2",
+      "setupCommand": "login"
+    },
     "commands": {
-      "login": { "description": "Run the OAuth2 browser login flow to obtain and store Google credentials" }
+      "login": {
+        "description": "Run the OAuth2 browser login flow to obtain and store Google credentials"
+      }
     }
   }
 }

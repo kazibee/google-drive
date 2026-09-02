@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "validator": {
+    "name": "kazibee",
+    "version": "1"
+  },
+  "package": {
+    "id": "google-drive",
+    "name": "@kazibee/google-drive",
+    "version": "0.1.0"
+  },
+  "artifacts": {
+    "entry": "src/index.ts",
+    "declaration": ".kazibee/index.d.ts",
+    "manual": "llm.txt",
+    "permissions": "permissions.json",
+    "command": "src/command.ts"
+  },
+  "files": [
+    {
+      "path": ".kazibee/index.d.ts",
+      "role": "declaration",
+      "bytes": 1139,
+      "sha256": "a785a0966dda5a9f0306a01cd2846b23ceaeb117990efa1aef449458e660aa2b"
+    },
+    {
+      "path": "llm.txt",
+      "role": "manual",
+      "bytes": 2030,
+      "sha256": "454f646e90cfdcf1d7a92b955df119b99ec1950d691dd1bb8001959d683350d7"
+    },
+    {
+      "path": "package.json",
+      "role": "manifest",
+      "bytes": 1083,
+      "sha256": "8fffca2c45886581078a96613ccc227002845f0241a3a0683c4287b936c66998"
+    },
+    {
+      "path": "permissions.json",
+      "role": "permissions",
+      "bytes": 690,
+      "sha256": "1d43355129f373f1c2492d6db0204895b1e18fce3f4a170cb87978f46ec37439"
+    },
+    {
+      "path": "src/auth.ts",
+      "role": "source",
+      "bytes": 355,
+      "sha256": "803d797ee83b85fa4726f2f9b14a7357e48bcd828a926dc64ad94267d822a698"
+    },
+    {
+      "path": "src/command.ts",
+      "role": "command",
+      "bytes": 3989,
+      "sha256": "ed20435b2820ebd35b182fae59ebb685b4c4843a252680e37ce57de4c69b1078"
+    },
+    {
+      "path": "src/drive-client.ts",
+      "role": "source",
+      "bytes": 6004,
+      "sha256": "57db340acb1e6924b325692431338734a31cad3373f3ef27727e76554a5abcf6"
+    },
+    {
+      "path": "src/index.ts",
+      "role": "source",
+      "bytes": 338,
+      "sha256": "dc59d2a78230fc4786c8c20df2a976eb4de2dada7da2573ff4e490dcbe403f77"
+    }
+  ],
+  "contentDigest": "cd491ee1a12458004ebe0313dd8a61e09a0bbdee9620d8047d81fea2f128d3af"
+}
