@@ -203,7 +203,7 @@ async function withAuthHint<T>(promise: Promise<T>): Promise<T> {
 
     if (message.includes('invalid_grant')) {
       throw new Error(
-        'Google Drive authentication failed (invalid_grant). Run `kazibee google-drive login` to refresh the token for this tool.',
+        'Google Drive authentication failed (invalid_grant). Ask the user to run login in Settings → Tools → google-drive → Commands to refresh the token.',
       );
     }
 

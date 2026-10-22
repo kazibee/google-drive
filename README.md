@@ -4,21 +4,15 @@ Google Drive tool for kazibee. List files, read metadata, create folders, create
 
 ## Install
 
-```bash
-kazibee install google-drive github:kazibee/google-drive
-```
-
-Install globally with `-g`:
-
-```bash
-kazibee install -g google-drive github:kazibee/google-drive
-```
+In the Kazibee desktop app, open **Settings → Tools → Add Extension → Install** and enter
+`github:kazibee/google-drive`. The app clones the latest commit and records its SHA; use
+**Update** on the extension to move to a newer commit.
 
 ## Login
 
-```bash
-kazibee google-drive login
-```
+Open **Settings → Tools → google-drive → Commands** and run `login`. It needs a Google OAuth
+app's `CLIENT_ID` and `CLIENT_SECRET`: set them in the extension's **Environment** tab, or pass
+them as the command's arguments (`CLIENT_ID CLIENT_SECRET`).
 
 Opens your browser to authorize with Google. Credentials are stored automatically.
 
