@@ -22,6 +22,23 @@ export interface MoveFileOptions {
   removeParentIds?: string[];
 }
 
+export interface DownloadOptions {
+  /** Export format for native Google files (Docs/Sheets/Slides/Drawings). Defaults to Office/PNG formats. */
+  exportMimeType?: string;
+}
+
+export interface DownloadResult {
+  outputPath: string;
+  sizeBytes: number;
+  name: string;
+  /** MIME type of the bytes written. */
+  mimeType: string;
+  /** MIME type of the file in Drive. */
+  sourceMimeType: string;
+  /** True when a native Google file was exported. */
+  exported: boolean;
+}
+
 export function createDriveClient(auth: OAuth2Client) {
   const drive = createDrive({ version: 'v3', auth });
 
@@ -40,6 +57,8 @@ export function createDriveClient(auth: OAuth2Client) {
     moveFile: (fileId: string, targetParentId: string, options?: MoveFileOptions) =>
       withAuthHint(moveFile(drive, fileId, targetParentId, options)),
     downloadTextFile: (fileId: string) => withAuthHint(downloadTextFile(drive, fileId)),
+    downloadFile: (fileId: string, outputPath: string, options?: DownloadOptions) =>
+      withAuthHint(downloadFile(drive, fileId, outputPath, options)),
     deleteFile: (fileId: string) => withAuthHint(deleteFile(drive, fileId)),
   };
 }
@@ -177,6 +196,77 @@ async function downloadTextFile(drive: DriveAPI, fileId: string): Promise<string
   if (typeof data === 'string') return data;
   if (Buffer.isBuffer(data)) return data.toString('utf8');
   return JSON.stringify(data);
+}
+
+/** Default export formats for native Google Workspace files. */
+const DEFAULT_EXPORT_MIME: Record<string, { mimeType: string; extension: string }> = {
+  'application/vnd.google-apps.document': {
+    mimeType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    extension: '.docx',
+  },
+  'application/vnd.google-apps.spreadsheet': {
+    mimeType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    extension: '.xlsx',
+  },
+  'application/vnd.google-apps.presentation': {
+    mimeType: 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+    extension: '.pptx',
+  },
+  'application/vnd.google-apps.drawing': { mimeType: 'image/png', extension: '.png' },
+  'application/vnd.google-apps.script': {
+    mimeType: 'application/vnd.google-apps.script+json',
+    extension: '.json',
+  },
+};
+
+async function downloadFile(
+  drive: DriveAPI,
+  fileId: string,
+  outputPath: string,
+  options?: DownloadOptions,
+): Promise<DownloadResult> {
+  const meta = await drive.files.get({ fileId, fields: 'id,name,mimeType' });
+  const sourceMimeType = meta.data.mimeType ?? '';
+  const isNative = sourceMimeType.startsWith('application/vnd.google-apps.');
+
+  let bytes: Buffer;
+  let mimeType: string;
+
+  if (isNative) {
+    if (sourceMimeType === 'application/vnd.google-apps.folder') {
+      throw new Error(`File ${fileId} is a folder and cannot be downloaded.`);
+    }
+    const exportMimeType =
+      options?.exportMimeType ?? DEFAULT_EXPORT_MIME[sourceMimeType]?.mimeType;
+    if (!exportMimeType) {
+      throw new Error(
+        `No default export format for ${sourceMimeType}. Pass options.exportMimeType.`,
+      );
+    }
+    const res = await drive.files.export(
+      { fileId, mimeType: exportMimeType },
+      { responseType: 'arraybuffer' },
+    );
+    bytes = Buffer.from(res.data as ArrayBuffer);
+    mimeType = exportMimeType;
+  } else {
+    const res = await drive.files.get(
+      { fileId, alt: 'media' },
+      { responseType: 'arraybuffer' },
+    );
+    bytes = Buffer.from(res.data as unknown as ArrayBuffer);
+    mimeType = sourceMimeType;
+  }
+
+  await Bun.write(outputPath, bytes);
+  return {
+    outputPath,
+    sizeBytes: bytes.length,
+    name: meta.data.name ?? '',
+    mimeType,
+    sourceMimeType,
+    exported: isNative,
+  };
 }
 
 async function deleteFile(drive: DriveAPI, fileId: string): Promise<void> {

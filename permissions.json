@@ -12,6 +12,7 @@
     "listFiles": { "read": true, "write": false },
     "getFile": { "read": true, "write": false },
     "downloadTextFile": { "read": true, "write": false },
+    "downloadFile": { "read": true, "write": true },
     "createFolder": { "read": true, "write": true },
     "createGoogleDoc": { "read": true, "write": true },
     "uploadTextFile": { "read": true, "write": true },

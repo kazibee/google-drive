@@ -18,6 +18,7 @@ Typical intents to map
 - "update file" -> updateTextFile(fileId, content, mimeType?)
 - "move file into folder" -> moveFile(fileId, targetParentId, options?)
 - "download file text" -> downloadTextFile(fileId)
+- "download any file (binary, PDF, image, Google Doc/Sheet/Slide) to disk" -> downloadFile(fileId, outputPath, { exportMimeType? }) -> { outputPath, sizeBytes, name, mimeType, sourceMimeType, exported }. Native Google files export to .docx/.xlsx/.pptx/.png by default; pass exportMimeType (e.g. "application/pdf") to override. outputPath must be in a workspace dir granted via allowWorkspace.
 - "remove file" -> deleteFile(fileId)
 
 Code call examples
